@@ -1,0 +1,4 @@
+ansible==10.1.0
+ansible-lint==24.6.1
+# ドキュメントを自動生成
+ansible-doctor==6.0.1

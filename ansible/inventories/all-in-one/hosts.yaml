@@ -1,0 +1,16 @@
+# 環境変数 ALL_IN_ONE_HOST が必要
+---
+all:
+  children:
+    web_servers:
+      hosts:
+        all-in-one:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'ALL_IN_ONE_HOST') }}"
+    db_server:
+      hosts:
+        all-in-one:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'ALL_IN_ONE_HOST') }}"
+    redis_server:
+      hosts:
+        all-in-one:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'ALL_IN_ONE_HOST') }}"

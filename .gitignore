@@ -274,3 +274,5 @@ tmp/*
 
 # .gitkeepはgit管理する(どの階層でも)
 !.gitkeep
+
+.env

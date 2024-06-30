@@ -1,0 +1,15 @@
+---
+
+services:
+  ansible:
+    build: .
+    working_dir: /ansible/
+    volumes:
+      - type: bind
+        source: ${PWD}/ansible/
+        target: /ansible/
+      - type: bind
+        source: ${HOME}/.ssh/
+        target: /root/.ssh/
+    env_file:
+      - .env

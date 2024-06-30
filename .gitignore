@@ -271,7 +271,7 @@ pyrightconfig.json
 #
 !tmp/
 tmp/*
-!tmp/ansible/
+!tmp/ansible-log/
 
 # .gitkeepはgit管理する(どの階層でも)
 !.gitkeep

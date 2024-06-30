@@ -11,5 +11,8 @@ services:
       - type: bind
         source: ${HOME}/.ssh/
         target: /root/.ssh/
+      - type: bind
+        source: ${PWD}/tmp/ansible-log/
+        target: /var/log/ansible-log/
     env_file:
       - .env

@@ -11,4 +11,4 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 COPY requirements.txt /
 
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt

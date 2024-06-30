@@ -1,0 +1,8 @@
+---
+- name: webユーザーを追加
+  become: yes
+  ansible.builtin.user:
+    name: web
+    state: present
+    shell: /bin/bash
+    #shell: /usr/sbin/nologin

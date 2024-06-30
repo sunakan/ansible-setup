@@ -1,0 +1,6 @@
+# 全部入り(VM1つだけの時などで利用)
+---
+- name: all-in-one
+  hosts: all
+  roles:
+    - common

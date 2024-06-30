@@ -1,0 +1,14 @@
+---
+- name: aptで共通して入れる(neovim, curl, git, tmux等)
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name:
+      - neovim
+      - curl
+      - git
+      - tmux
+      - tree
+      - jq
+      - psmisc

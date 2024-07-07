@@ -1,0 +1,104 @@
+---
+- name: asdfに必要なパッケージのインストール
+  #tags: asdf
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    install_recommends: no
+    # aclはansibleでbecome_userをするために必要
+    name:
+      - curl
+      - git
+      - acl
+
+- name: asdf用ユーザーを作成
+  #tags: asdf
+  become: yes
+  ansible.builtin.user:
+    name: '{{ asdf_user }}'
+    state: present
+    home: '{{ asdf_user_home }}'
+    shell: /bin/bash
+    #shell: /usr/sbin/nologin
+
+- name: git clone asdf
+  #tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.git:
+    repo: 'https://github.com/asdf-vm/asdf.git'
+    dest: '{{ asdf_user_home }}/.asdf'
+    version: '{{ asdf_version }}'
+
+- name: ~/.bashrcにasdfの設定をセットアップ
+  #tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.blockinfile:
+    path: '{{ asdf_user_home }}/.bashrc'
+    block: |
+      . "$HOME/.asdf/asdf.sh"
+      . "$HOME/.asdf/completions/asdf.bash"
+
+#
+# asdf ruby
+#
+- name: asdf plugin add ruby
+  #tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: '~/.asdf/bin/asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git'
+  register: added_asdf_ruby_plugin
+  changed_when: '"already added" not in added_asdf_ruby_plugin.stdout'
+
+- name: asd install rubyに必要なパッケージをインストール
+  #tags: asdf
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    install_recommends: no
+    # ノート1: Ruby3.2.0からlibyamlが同梱されなくなったため、libyaml-devパッケージが必要になった
+    # ノート2: Rubyのビルドにはdefault-mysqlclient-devは不要、しかしmysql2 gemインストールに必要なためここで入れる
+    name:
+      - build-essential
+      - libssl-dev
+      - zlib1g-dev
+      - libyaml-dev
+      - default-libmysqlclient-dev
+
+- name: 'asdf install ruby {{ asdf_ruby_version }} (コア数が少ないと時間がかかります)'
+  #tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: '~/.asdf/bin/asdf install ruby {{ asdf_ruby_version }}'
+  register: installed_asdf_ruby
+  changed_when: '"already installed" not in installed_asdf_ruby.stdout'
+
+- name: 'asdf global ruby {{ asdf_ruby_version }}'
+  # tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: '~/.asdf/bin/asdf global ruby {{ asdf_ruby_version }}'
+
+#
+# asdf nodejs
+#
+- name: asdf plugin add nodejs
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: '~/.asdf/bin/asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git'
+  register: added_asdf_nodejs_plugin
+  changed_when: '"already added" not in added_asdf_nodejs_plugin.stdout'
+
+- name: 'asdf install nodejs {{ asdf_nodejs_version }}'
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: '~/.asdf/bin/asdf install nodejs {{ asdf_nodejs_version }}'
+  register: installed_asdf_nodejs
+  changed_when: '"already installed" not in installed_asdf_nodejs.stdout'

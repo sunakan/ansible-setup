@@ -1,6 +1,6 @@
 ---
 - name: asdfに必要なパッケージのインストール
-  #tags: asdf
+  tags: asdf
   become: yes
   ansible.builtin.apt:
     state: present
@@ -14,7 +14,7 @@
       - acl
 
 - name: asdf用ユーザーを作成
-  #tags: asdf
+  tags: asdf
   become: yes
   ansible.builtin.user:
     name: '{{ asdf_user }}'
@@ -24,7 +24,7 @@
     #shell: /usr/sbin/nologin
 
 - name: git clone asdf
-  #tags: asdf
+  tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
   ansible.builtin.git:
@@ -33,7 +33,7 @@
     version: '{{ asdf_version }}'
 
 - name: ~/.bashrcにasdfの設定をセットアップ
-  #tags: asdf
+  tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
   ansible.builtin.blockinfile:
@@ -46,7 +46,7 @@
 # asdf ruby
 #
 - name: asdf plugin add ruby
-  #tags: asdf
+  tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
   ansible.builtin.command: '~/.asdf/bin/asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git'
@@ -54,7 +54,7 @@
   changed_when: '"already added" not in added_asdf_ruby_plugin.stdout'
 
 - name: asd install rubyに必要なパッケージをインストール
-  #tags: asdf
+  tags: asdf
   become: yes
   ansible.builtin.apt:
     state: present
@@ -71,7 +71,7 @@
       - default-libmysqlclient-dev
 
 - name: 'asdf install ruby {{ asdf_ruby_version }} (コア数が少ないと時間がかかります)'
-  #tags: asdf
+  tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
   ansible.builtin.command: '~/.asdf/bin/asdf install ruby {{ asdf_ruby_version }}'
@@ -79,7 +79,7 @@
   changed_when: '"already installed" not in installed_asdf_ruby.stdout'
 
 - name: 'asdf global ruby {{ asdf_ruby_version }}'
-  # tags: asdf
+  tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
   ansible.builtin.command: '~/.asdf/bin/asdf global ruby {{ asdf_ruby_version }}'

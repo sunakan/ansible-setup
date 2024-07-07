@@ -3,8 +3,12 @@ ping: ## 接続確認
 	docker compose run --rm ansible ansible -i inventories/all-in-one/hosts.yaml web_servers -m ansible.builtin.ping
 
 .PHONY: ansible.all-in-one
-ansible.all-in-one: ## all-in-one環境をsetup
+setup.all-in-one: ## all-in-one環境をsetup
 	docker compose run --rm ansible ansible-playbook -i inventories/all-in-one/hosts.yaml all-in-one.yaml
+
+.PHONY: ssh.all-in-one
+ssh.all-in-one: ## all-in-one環境にssh
+	ssh "${ANSIBLE_SSH_USER}@${ALL_IN_ONE_HOST}" -i "${ANSIBLE_SSH_PRIVATE_KEY_FILE}"
 
 
 ################################################################################

@@ -74,7 +74,9 @@
   tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
-  ansible.builtin.command: '~/.asdf/bin/asdf install ruby {{ asdf_ruby_version }}'
+  ansible.builtin.command: 'asdf install ruby {{ asdf_ruby_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
   register: installed_asdf_ruby
   changed_when: '"already installed" not in installed_asdf_ruby.stdout'
 
@@ -82,7 +84,9 @@
   tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
-  ansible.builtin.command: '~/.asdf/bin/asdf global ruby {{ asdf_ruby_version }}'
+  ansible.builtin.command: 'asdf global ruby {{ asdf_ruby_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
 
 #
 # asdf nodejs
@@ -91,7 +95,9 @@
   tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
-  ansible.builtin.command: '~/.asdf/bin/asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git'
+  ansible.builtin.command: 'asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
   register: added_asdf_nodejs_plugin
   changed_when: '"already added" not in added_asdf_nodejs_plugin.stdout'
 
@@ -99,6 +105,8 @@
   tags: asdf
   become: yes
   become_user: '{{ asdf_user }}'
-  ansible.builtin.command: '~/.asdf/bin/asdf install nodejs {{ asdf_nodejs_version }}'
+  ansible.builtin.command: 'asdf install nodejs {{ asdf_nodejs_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
   register: installed_asdf_nodejs
   changed_when: '"already installed" not in installed_asdf_nodejs.stdout'

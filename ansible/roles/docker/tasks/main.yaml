@@ -1,0 +1,59 @@
+---
+# 参考
+# Install Docker and Portainer in a VM using Ansible
+# https://dev.to/rimelek/install-docker-and-portainer-in-a-vm-using-ansible-21ib
+- name: dockerに必要なpackageのインストール
+  tags: docker
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    install_recommends: no
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    name:
+      - ca-certificates
+      - curl
+- name: sudo mkdir -m 0755 -p /etc/apt/keyrings
+  tags: docker
+  become: yes
+  ansible.builtin.file:
+    state: directory
+    mode: 0755
+    path: /etc/apt/keyrings
+- name: dockerのapt repoのapt keyをインストール
+  tags: docker
+  become: yes
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: a+r
+
+- name: ディストリビューション情報の取得
+  tags: docker
+  ansible.builtin.setup:
+    gather_subset:
+      - distribution_release
+
+# todo: amd64 or arm64 かを動的に選択
+- name: dockerのapt repoを追加
+  tags: docker
+  become: true
+  ansible.builtin.apt_repository:
+    filename: docker
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable"
+    state: present
+    update_cache: true
+
+# docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+- name: dockerのインストール
+  tags: docker
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin

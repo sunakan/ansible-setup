@@ -7,3 +7,14 @@ ansible-setup
 ----
 
 - Ubuntu
+
+実行
+----
+
+```shell
+cp .env.sample .env
+vim .env
+direnv allow
+make ping
+make ansible.all-in-one
+```

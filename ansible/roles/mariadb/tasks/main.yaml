@@ -1,0 +1,57 @@
+---
+- name: MariaDBのインストール
+  tags: mariadb
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    name:
+      - mariadb-server
+
+- name: MariaDB 起動
+  tags: mariadb
+  ansible.builtin.systemd:
+    name: mariadb
+    state: started
+
+# https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04-ja#2-mariadb
+# passwordの方は適宜変更する
+# GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin-hoge-fuga' WITH GRANT OPTION;
+# SELECT User, Host, authentication_string FROM mysql.user;
+
+
+#- name: Securing MariaDB
+#  tags: mariadb
+#  become: true
+#  ansible.builtin.expect:
+#    command: mysql_secure_installation
+#    responses:
+#      'Enter current password for root \(enter for none\): ': ''
+#      'Switch to unix_socket authentication \[Y\/n\] ': 'n'
+#      'Change the root password\? \[Y\/n\] ': 'y'
+#      'New password:': "{{ db_root_user_pass }}"
+#      'Re-enter new password:': "{{ db_root_user_pass }}"
+#      'Remove anonymous users\? \[Y\/n\]': 'y'
+#      'Disallow root login remotely\? \[Y\/n\]': 'n'
+#      'Remove test database and access to it\? \[Y\/n\]': 'y'
+#      'Reload privilege tables now\? \[Y\/n\]': 'y'
+#
+- name: MariaDBに対して、リモート接続を許可する
+  tags: mariadb
+  become: yes
+  ansible.builtin.lineinfile:
+    mode: "0644"
+    path: "{{ item.dir }}"
+    regexp: "^bind-address"
+    create: true
+    line: "bind-address  = 0.0.0.0"
+  with_items:
+    - { dir: "/etc/mysql/mariadb.conf.d/50-server.cnf" }
+
+- name: Restarting MariaDB
+  tags: mariadb
+  become: yes
+  ansible.builtin.systemd:
+    name: mariadb
+    state: restarted

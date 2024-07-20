@@ -11,3 +11,8 @@ asdf_user_home: /home/app
 asdf_version: v0.14.0
 asdf_ruby_version: 3.3.3
 asdf_nodejs_version: 22.3.0
+
+# MariaDB等のDBユーザーとパスワード
+db_user: "{{ lookup('ansible.builtin.env', 'DB_USER') }}"
+db_pass: "{{ lookup('ansible.builtin.env', 'DB_PASS') }}"
+db_root_user_pass: "{{ lookup('ansible.builtin.env', 'DB_ROOT_USER_PASS') }}"

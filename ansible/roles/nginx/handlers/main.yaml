@@ -1,0 +1,18 @@
+---
+# notify: Build nginx.conf and restart nginx
+# で呼び出される
+- name: nginx.conf を作成
+  tags: nginx
+  become: true
+  # VAR1とVAR2を置換をする場合
+  # `envsubst '$VAR1 $VAR2' < template.txt > output.txt`
+  ansible.builtin.shell: "envsubst '' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf"
+  listen: 'Build nginx.conf and restart nginx'
+
+- name: Nginx の再起動
+  tags: nginx
+  become: true
+  ansible.builtin.systemd:
+    name: nginx
+    state: reloaded
+  listen: 'Build nginx.conf and restart nginx'

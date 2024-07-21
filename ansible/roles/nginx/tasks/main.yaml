@@ -8,6 +8,8 @@
     cache_valid_time: '{{ apt_update_cache_valid_time }}'
     name:
       - nginx
+      # envsubstコマンドを使うために必要
+      - gettext-base
 
 - name: Nginx 起動
   tags: nginx
@@ -20,3 +22,14 @@
   ansible.builtin.systemd:
     name: nginx
     enabled: yes
+
+- name: NginxにRails用の設定を導入
+  become: true
+  tags: nginx
+  template:
+    src: templates/nginx.conf.template
+    dest: "/etc/nginx/nginx.conf.template"
+  notify: Build nginx.conf and restart nginx
+
+# TODO: 起動用のユーザーを作成
+# TODO: Nginxは起動用ユーザーで起動するような設定にする

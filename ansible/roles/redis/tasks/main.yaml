@@ -1,0 +1,86 @@
+---
+
+# 参考
+# Install Redis on Linux
+# https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-linux/
+- name: リポジトリ追加に必要なpackageのインストール
+  tags: redis
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    install_recommends: no
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    name:
+      - curl
+      - gpg
+
+- name: Redis repository の追加(最新のRedisを利用したいため)
+  tags: redis
+  become: true
+  ansible.builtin.apt_key:
+    url: https://packages.redis.io/gpg
+    keyring: /usr/share/keyrings/redis-archive-keyring.gpg
+    state: present
+
+- name: ディストリビューション情報の取得
+  tags: redis
+  ansible.builtin.setup:
+    gather_subset:
+      - distribution_release
+
+- name: Redis repositoryを追加
+  tags: redis
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb {{ ansible_facts.distribution_release }} main"
+    state: present
+    filename: redis
+
+- name: Redisのインストール(user,groupも出来る)
+  tags: redis
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name:
+      - redis-server
+
+- name: Redis 設定ディレクトリの権限を755にする
+  tags: redis
+  become: true
+  ansible.builtin.file:
+    path: /etc/redis
+    state: directory
+    owner: redis
+    group: redis
+    mode: '0755'
+
+- name: Redis 設定ファイルの権限を644にする
+  tags: redis
+  become: true
+  ansible.builtin.file:
+    path: /etc/redis/redis.conf
+    owner: redis
+    group: redis
+    mode: '0644'
+
+- name: Redis 起動
+  tags: redis
+  ansible.builtin.systemd:
+    name: redis-server
+    state: started
+
+- name: Reds 自動起動を無効化
+  tags: redis
+  ansible.builtin.systemd:
+    name: redis-server
+    enabled: no
+
+- name: Redisの設定ファイルを更新
+  become_user: redis
+  become: true
+  tags: redis
+  template:
+    src: templates/redis.conf.template
+    dest: "/etc/redis/redis.conf.template"

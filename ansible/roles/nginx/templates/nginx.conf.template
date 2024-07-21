@@ -32,6 +32,25 @@ http {
     }
 
     server {
+        listen 80;
+        # NewRelicでモニタリングするのに必要なため導入
+        # nginx -Vで--with-http_stub_status_moduleが含まれている必要がある
+        # VM上で
+        # ```
+        # sudo apt-get install nri-nginx -y
+        # cd /etc/newrelic-infra/integrations.d
+        # sudo cp nginx-config.yml.sample nginx-config.yml
+        # sudo vim nginx-config.yml
+        # ```
+        # 参考: https://docs.newrelic.com/jp/install/nginx/
+        location /nginx_status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            deny all;
+        }
+    }
+    server {
         listen 8080;
         # 本番環境では指定するべき
         # _はワイルドーカード(基本あまりおすすめされない。全てのホスト名にマッチしてしまうため)
@@ -39,7 +58,6 @@ http {
         # server_name localhost;
         root /home/app/app/public;
         try_files $uri/index.html $uri @rails_app;
-
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         location @rails_app {

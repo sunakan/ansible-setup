@@ -15,11 +15,16 @@
     name: mariadb
     state: started
 
+# 自分でやる場合
+# sudo su -
+# mysql
 # https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04-ja#2-mariadb
 # passwordの方は適宜変更する
 # GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin-hoge-fuga' WITH GRANT OPTION;
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_password' WITH GRANT OPTION;
 # SELECT User, Host, authentication_string FROM mysql.user;
-
+# FLUSH PRIVILEGES;
+# DROP USER 'root'@'%';
 
 #- name: Securing MariaDB
 #  tags: mariadb
@@ -27,15 +32,15 @@
 #  ansible.builtin.expect:
 #    command: mysql_secure_installation
 #    responses:
-#      'Enter current password for root \(enter for none\): ': ''
-#      'Switch to unix_socket authentication \[Y\/n\] ': 'n'
-#      'Change the root password\? \[Y\/n\] ': 'y'
-#      'New password:': "{{ db_root_user_pass }}"
-#      'Re-enter new password:': "{{ db_root_user_pass }}"
-#      'Remove anonymous users\? \[Y\/n\]': 'y'
-#      'Disallow root login remotely\? \[Y\/n\]': 'n'
-#      'Remove test database and access to it\? \[Y\/n\]': 'y'
-#      'Reload privilege tables now\? \[Y\/n\]': 'y'
+#      'Enter current password for root \(enter for none\): ': '' # 現在のパスワード、ない場合は空文字を入力
+#      'Switch to unix_socket authentication \[Y\/n\] ': 'n' # unix_socket認証を使うかどうか
+#      'Change the root password\? \[Y\/n\] ': 'y' # rootのパスワードを変更するかどうか
+#      'New password:': "{{ db_root_user_pass }}" # 新しいパスワード
+#      'Re-enter new password:': "{{ db_root_user_pass }}" # 新しいパスワードの再入力
+#      'Remove anonymous users\? \[Y\/n\]': 'y' # 匿名ユーザーを削除するかどうか
+#      'Disallow root login remotely\? \[Y\/n\]': 'n' # rootユーザーのリモートログインを不許可するかどうか(n = 許可)
+#      'Remove test database and access to it\? \[Y\/n\]': 'y' # テストデータベースを削除するかどうか
+#      'Reload privilege tables now\? \[Y\/n\]': 'y' # 権限テーブルを再読み込みするかどうか
 #
 - name: MariaDBに対して、リモート接続を許可する
   tags: mariadb

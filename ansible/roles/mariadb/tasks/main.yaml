@@ -15,16 +15,35 @@
     name: mariadb
     state: started
 
-# 自分でやる場合
+# 自分でやる
 # sudo su -
 # mysql
 # https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04-ja#2-mariadb
 # passwordの方は適宜変更する
-# GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin-hoge-fuga' WITH GRANT OPTION;
+# GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'your_password' WITH GRANT OPTION;
 # GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_password' WITH GRANT OPTION;
 # SELECT User, Host, authentication_string FROM mysql.user;
 # FLUSH PRIVILEGES;
 # DROP USER 'root'@'%';
+
+# rootでlogin
+# ```sql
+# create database app;
+# create user 'app'@'%' identified by 'your_password';
+# grant all privileges on app.* to 'app'@'%';
+# flush privileges;
+# show grants for 'app'@'%';
+# show variables like '%collation%';
+# select default_collation_name from information_schema.schemata where schema_name = 'app';
+# ```
+# 何もしなかったらデフォ「utf8mb4_general_ci」となる
+
+# Rails
+# bundle exec rails new app -d mysql --skip-bundle
+# cd app
+# rm config/database.yaml
+# export DATABASE_URL=mysql2://app:your_password@localhost:3306/app
+# bundle exec rails s -b 0.0.0.0
 
 #- name: Securing MariaDB
 #  tags: mariadb

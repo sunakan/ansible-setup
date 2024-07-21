@@ -110,3 +110,10 @@
     PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
   register: installed_asdf_nodejs
   changed_when: '"already installed" not in installed_asdf_nodejs.stdout'
+- name: 'asdf global nodejs {{ asdf_nodejs_version }}'
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: 'asdf global nodejs {{ asdf_nodejs_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"

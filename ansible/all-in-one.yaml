@@ -9,3 +9,4 @@
     - docker
     - asdf
     - mariadb
+    - nginx

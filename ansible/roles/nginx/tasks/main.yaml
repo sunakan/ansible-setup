@@ -1,0 +1,22 @@
+---
+- name: Nginxのインストール
+  tags: nginx
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    name:
+      - nginx
+
+- name: Nginx 起動
+  tags: nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+
+- name: Nginx 自動起動を有効化
+  tags: nginx
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: yes

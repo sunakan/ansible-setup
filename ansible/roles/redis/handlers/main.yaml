@@ -1,0 +1,26 @@
+---
+# notify: Build redis.conf and restart redis
+# で呼び出される
+- name: redis.conf をbackup
+  tags: redis
+  become_user: redis
+  become: true
+  ansible.builtin.shell: "cp /etc/redis/redis.conf /etc/redis/redis.conf.bak.$(date +'%Y%m%dT%H%M%S')"
+  listen: 'Build redis.conf and restart redis'
+
+- name: redis.conf を作成
+  tags: redis
+  become_user: redis
+  become: true
+  # VAR1とVAR2を置換をする場合
+  # `envsubst '$VAR1 $VAR2' < template.txt > output.txt`
+  ansible.builtin.shell: "envsubst '' < /etc/redis/redis.conf.template > /etc/redis/redis.conf"
+  listen: 'Build redis.conf and restart redis'
+
+- name: Redis の再起動
+  tags: redis
+  become: true
+  ansible.builtin.systemd:
+    name: redis-server
+    state: restarted
+  listen: 'Build redis.conf and restart redis'

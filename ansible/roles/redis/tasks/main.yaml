@@ -71,7 +71,7 @@
     name: redis-server
     state: started
 
-- name: Reds 自動起動を無効化
+- name: Redis 自動起動を無効化
   tags: redis
   ansible.builtin.systemd:
     name: redis-server
@@ -81,6 +81,9 @@
   become_user: redis
   become: true
   tags: redis
-  template:
+  ansible.builtin.template:
     src: templates/redis.conf.template
     dest: "/etc/redis/redis.conf.template"
+  notify: Build redis.conf and restart redis
+
+# sudo systemctl start redis-server.service

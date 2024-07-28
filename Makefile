@@ -11,6 +11,10 @@ setup.all-in-one: ## all-in-one環境をsetup
 ssh.all-in-one: ## all-in-one環境にssh
 	ssh "${ANSIBLE_SSH_USER}@${ALL_IN_ONE_HOST}" -i "${ANSIBLE_SSH_PRIVATE_KEY_FILE}" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
+.PHONY: myip
+myip: ## myipを取得
+	@curl https://ipinfo.io/ip
+
 ################################################################################
 # CI
 ################################################################################

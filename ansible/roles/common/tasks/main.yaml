@@ -16,3 +16,7 @@
       - jq
       - psmisc
       - make
+      - net-tools
+
+# psmisc: pstreeのため
+# net-tools: ifconfigのため

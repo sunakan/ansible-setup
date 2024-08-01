@@ -4,7 +4,7 @@ ping: ## 接続確認
 
 .PHONY: ansible.all-in-one
 setup.all-in-one: ## all-in-one環境をsetup
-	docker compose run --rm ansible ansible-playbook -i inventories/all-in-one/hosts.yaml all-in-one.yaml --tags "redis"
+	docker compose run --rm ansible ansible-playbook -i inventories/all-in-one/hosts.yaml all-in-one.yaml
 	#docker compose run --rm ansible ansible-playbook -i inventories/all-in-one/hosts.yaml all-in-one.yaml --tags "common,redis"
 
 .PHONY: ssh.all-in-one

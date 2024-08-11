@@ -1,0 +1,24 @@
+#cloud-config
+hostname: ${hostname}
+ssh_pwauth: false
+ssh_authorized_keys:
+%{ for ssh_key in ssh_authorized_keys ~}
+  - '${ssh_key}'
+%{ endfor ~}
+timezone: "Asia/Tokyo"
+write_files:
+  - path: /etc/netplan/60-netcfg.yaml
+    owner: "root:root"
+    permissions: "0o600"
+    content: |
+      network:
+        ethernets:
+          ens4:
+            dhcp4: 'no'
+            dhcp6: 'no'
+            addresses:
+              - ${cidr}
+        version: 2
+
+runcmd:
+  - sudo netplan apply

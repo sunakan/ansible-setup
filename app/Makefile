@@ -1,16 +1,36 @@
+.PHONY: db.setup
+db.setup: ## DBのセットアップ
+	@make db.init
+	@make db.migrate
+	@make db.reset-and-seed
+
 .PHONY: db.init
-db.init: ## DBMSのユーザーやDB作成
-	@echo '---[ MySQL ]'
-	@echo user: $${MYSQL_USER}
-	@echo host: $${MYSQL_HOST}
-	@echo 'pass: *****'
-	@echo '---'
-	mysql -u$${MYSQL_USER} -h$${MYSQL_HOST} < ./sql/00-init.sql
-	@mysql -u$${MYSQL_USER} -h$${MYSQL_HOST} -e "show databases like 'app_%';"
-	@mysql -u$${MYSQL_USER} -h$${MYSQL_HOST} -e "select user from mysql.user where user = 'app';"
+db.init: ## DBMSのユーザーやDBの初期化
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} < /sql/00-init.sql"
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} -e 'show databases like \"app%\";'"
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} -e 'select user from mysql.user where user = \"app\";'"
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} -e 'select table_schema, table_name from information_schema.tables where table_schema like \"app%\"'"
+
+.PHONY: db.migrate
+db.migrate: ## DB マイグレーション
+	mysqldef -u$${MYSQL_USER} -h$${MYSQL_HOST} --enable-drop-table app_development < ./sql/10-schema.sql
+	mysqldef -u$${MYSQL_USER} -h$${MYSQL_HOST} --enable-drop-table app_test < ./sql/10-schema.sql
+
+.PHONY: db.migrate.dry-run
+db.migrate.dry-run: ## DB マイグレーション(dry-run)
+	mysqldef -u$${MYSQL_USER} -h$${MYSQL_HOST} --enable-drop-table app_development --dry-run < ./sql/10-schema.sql
+
+.PHONY: db.reset-and-seed
+db.reset-and-seed: ## DB を1度空にして、seedデータを入れる
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} app_development < /sql/20-seed.sql"
+	@docker compose exec mysql bash -c "mysql -h$${MYSQL_HOST} app_development -e 'select * from products; select * from users;'"
+
+.PHONY: up
+up: ## docker compose up
+	docker compose up
 
 .PHONY: down
-down: ## docker compose down
+down: ## docker compose down -v
 	docker compose down -v
 
 ################################################################################

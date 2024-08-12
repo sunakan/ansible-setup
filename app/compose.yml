@@ -6,9 +6,14 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - mysql_data:/var/lib/mysql
+      - type: volume
+        source: mysql_data
+        target: /var/lib/mysql
+      - type: bind
+        source: ${PWD}/sql/
+        target: /sql/
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
 
 volumes:
   mysql_data:

@@ -4,6 +4,59 @@ info:
   title: API V1
   version: v1
 paths:
+  "/orders":
+    post:
+      summary: create order
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+  "/orders/new":
+    get:
+      summary: new order
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+  "/orders/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: 注文のid
+      example: 123
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: show order
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
   "/":
     get:
       summary: show welcome

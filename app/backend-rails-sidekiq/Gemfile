@@ -18,4 +18,4 @@ group :test do
   gem "json_spec"
 end
 gem "rswag"
-# gem "rack-cors"
+gem "rack-cors"

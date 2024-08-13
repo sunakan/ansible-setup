@@ -1,11 +1,11 @@
-<%= service_status['name'].humanize %>
-
-<% if service_status['status'] == true %>>
-  <span role="img" description="checkmark">✅</span>
-<% else %>
-  <span role="img" description="stop sign">🛑</span>
-<% end %>
-
+<h3>
+  <%= service_status['name'].humanize %>
+  <% if service_status['status'] == true %>>
+    <span role="img" description="checkmark">✅</span>
+  <% else %>
+    <span role="img" description="stop sign">🛑</span>
+  <% end %>
+</h3>
 
 
 <% if service_status['name'] == params["updated_service"] %>
@@ -18,7 +18,6 @@
 
 <section class="p-4 border rounded bg-white">
   <% if service_status['status'] == true %>
-    <h4 class="font-semibold text-l text-left mb-2">サービス情報</h4>
     <table class="table-fixed bg-gray-100 w-full">
       <% service_status['info'].keys.sort.each do |key| %>
         <tr>

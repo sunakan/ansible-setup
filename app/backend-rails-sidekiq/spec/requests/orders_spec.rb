@@ -1,7 +1,6 @@
 require 'swagger_helper'
 
 RSpec.describe 'orders', type: :request do
-
   path '/orders' do
     post('create order') do
       consumes 'application/json'

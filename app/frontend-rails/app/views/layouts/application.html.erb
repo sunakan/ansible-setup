@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>FrontendRails</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>FrontendRails</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application" %>
-  </head>
+  <%= stylesheet_link_tag "application" %>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body class="bg-gray-100"
+      data-controller="<%= controller_name %>"
+      data-action="<%= action_name %>">
+<header>
+  <nav class="bg-black text-white px-4 py-4 flex items-center">
+    <h1 class="text-xl uppercase tracking-tight font-medium">
+      <a href="/">
+        App
+      </a>
+    </h1>
+    <% if controller_name == "orders" && action_name.in?(["new", "create"]) %>
+    <% else %>
+      <a class="text-sm hover:text-gray-200 font-light hover:underline ml-7 " href="/orders/new">
+        注文(Order)レコードの作成<span role="img" description="right arrow">→</span>
+      </a>
+
+    <% end %>
+  </nav>
+</header>
+<%= yield %>
+</body>
 </html>

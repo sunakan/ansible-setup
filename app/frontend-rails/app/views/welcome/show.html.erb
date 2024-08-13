@@ -1,2 +1,24 @@
-<h1>Welcome#show</h1>
-<p>Find me in app/views/welcome/show.html.erb</p>
+<main class="text-center p-12">
+  <h2 class="font-bold text-3xl mt-2">Welcome!</h2>
+  <section class="mt-6">
+    <p>
+      <%= response['orders'].size %> <%= "order".pluralize(response['orders'].size) %> in the system.
+    </p>
+
+    <% response['orders'].each do  |order| %>
+      <a title="Link to order 1" href="<%= "/orders/#{order['id']}" %>">
+        <span role="img" description="brown packing box" class="">📦</span>
+      </a>
+    <% end %>
+
+    <hr class="my-6">
+    <h3 class="my-4 text-center font-bold text-2xl">Service Status</h3>
+    <div class="grid grid-cols-2">
+      <% response['service_statuses'].each do |service_status| %>
+        <%= render partial: 'service_status_panel', locals: { service_status: service_status } %>
+
+        <hr class="my-6">
+      <% end %>
+    </div>
+  </section>
+</main>

@@ -12,7 +12,7 @@ class Order < ApplicationRecord
     def validate(record)
       if record.product.present? && record.quantity.present? && record.quantity > 0
         if record.quantity > record.product.quantity_remaining
-          record.errors.add(:quantity,"is more than what is in stock")
+          record.errors.add(:quantity, "is more than what is in stock")
         end
       end
     end

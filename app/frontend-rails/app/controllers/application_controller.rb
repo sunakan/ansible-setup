@@ -2,6 +2,6 @@ class ApplicationController < ActionController::Base
   private
 
   def api_endpoint
-    "http://localhost:3000"
+    ENV.fetch('API_ENDPOINT', "http://localhost:3000")
   end
 end

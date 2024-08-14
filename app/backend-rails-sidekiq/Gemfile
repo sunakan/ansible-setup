@@ -13,10 +13,14 @@ end
 # END-ほぼデフォルト(tz-infoを削除)
 # START-自分で追加
 
+group :development, :test do
+  gem "rswag"
+end
+group :development do
+  gem "annotate", require: false
+end
 group :test do
   gem "rspec-rails"
   gem "json_spec"
 end
-gem "rswag"
 gem "rack-cors"
-gem "annotate"

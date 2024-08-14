@@ -1,11 +1,11 @@
 class OrdersController < ApplicationController
   def new
-    response = Net::HTTP.get(
+    response = Net::HTTP.get_response(
       URI("#{api_endpoint}/orders/new"),
       { 'Accept' => 'application/json' }
     )
 
-    render :new, locals: { response: JSON.parse(response).merge({'authenticity_token' => form_authenticity_token}) }
+    render :new, locals: { response: JSON.parse(response.body).merge({'authenticity_token' => form_authenticity_token}) }
   end
 
   def create
@@ -20,12 +20,11 @@ class OrdersController < ApplicationController
     )
 
     case response
-    when Net::HTTPOK
+    when Net::HTTPCreated
       order = JSON.parse(response.body)
       redirect_to "/orders/#{order['id']}"
-      return
     when Net::HTTPBadRequest
-      render :new, locals: { response: JSON.parse(response.body) }
+      render :new, locals: { response: JSON.parse(response.body).merge({'authenticity_token' => form_authenticity_token}) }
     else
       raise "Unexpected response: #{response.inspect}"
     end

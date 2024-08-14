@@ -35,7 +35,7 @@
             Throttle?
           </td>
           <td class="w-1/2 border px-4 py-2 text-left" data-testid="throttle">
-            <%= service_status.throttle ? "Yes" : "No" %>
+            <%= service_status['throttle'] ? "Yes" : "No" %>
           </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@
             Crash?
           </td>
           <td class="w-1/2 border px-4 py-2 text-left" data-testid="crash">
-            <%= service_status.crash ? "Yes" : "No" %>
+            <%= service_status['crash'] ? "Yes" : "No" %>
           </td>
         </tr>
         <tr>
@@ -51,18 +51,18 @@
             Time out after
           </td>
           <td class="w-1/2 border px-4 py-2 text-left" data-testid="sleep">
-            <%= service_status.sleep.to_i == 0 ? "No" : "#{service_status.sleep} seconds" %>
+            <%= service_status['sleep'].to_i == 0 ? "No" : "#{service_status['sleep']} seconds" %>
           </td>
         </tr>
         <tr>
           <td colspan="2" class="text-left">
-            <%= link_to "Manage…", edit_simulated_behavior_path(service_status.name), class: "text-blue-900 underline block px-4 py-2 font-semibold hover:text-blue-600", name: "manage" %>
+            <%= link_to "Manage…", edit_simulated_behavior_path(service_status['name']), class: "text-blue-900 underline block px-4 py-2 font-semibold hover:text-blue-600", name: "manage" %>
           </td>
         </tr>
       <% end %>
     </table>
   <% else %>
     <h4 class="font-semibold text-l text-left mb-2">Service Problem</h4>
-    <p class="text-left"><%= service_status.status %></p>
+    <p class="text-left"><%= service_status['status'] %></p>
   <% end %>
 </section>

@@ -2,11 +2,11 @@
   <h2 class="font-bold text-3xl mt-2">Welcome!</h2>
   <section class="mt-6">
     <p>
-      <%= response['orders'].size %> <%= "order".pluralize(response['orders'].size) %> in the system.
+      <%= response['order_ids'].size %> <%= "order".pluralize(response['order_ids'].size) %> in the system.
     </p>
 
-    <% response['orders'].each do  |order| %>
-      <a title="Link to order 1" href="<%= "/orders/#{order['id']}" %>">
+    <% response['order_ids'].each do  |order_id| %>
+      <a title="Link to order 1" href="<%= "/orders/#{order_id}" %>">
         <span role="img" description="brown packing box" class="">📦</span>
       </a>
     <% end %>

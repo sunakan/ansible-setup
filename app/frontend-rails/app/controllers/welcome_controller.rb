@@ -5,11 +5,6 @@ class WelcomeController < ApplicationController
       URI("#{api_endpoint}/"),
       { 'Accept' => 'application/json' }
     )
-    puts "-------------------------aaaaaaaaaaaaaaaaaaaa"
-    p response.class
-    p response
-    puts "-------------------------aaaaaaaaaaaaaaaaaaaa"
-
     render :show, locals: { response: JSON.parse(response.body) }
   end
 end

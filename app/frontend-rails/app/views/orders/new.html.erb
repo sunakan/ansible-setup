@@ -1,0 +1,42 @@
+<main class="p-4 w-full md:w-1/2">
+  <h1 class="text-4xl text-left">
+    New Order
+  </h1>
+
+  <% if response['order_errors'] %>
+    <%= render partial: "error_message", locals: { order_errors: response['order_errors'] } %>
+  <% end %>
+
+  <form class="grid grid-cols-3 gap-4 items-center pt-6" action="/orders" accept-charset="UTF-8" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= response['authenticity_token'] %>" autocomplete="off">
+
+    <label class="font-medium" for="order_product_product_id">製品(Product)</label>
+    <select class="col-span-2 text-field" name="order[product_id]" id="order_product_id">
+      <option>-- Choose Product --</option>
+      <% response['products'].each.with_index do |product, i| %>
+        <option value="<%= product['id'] %>" <%= i == 0 ? "selected" : "" %> data-product-price="<%= product['price_cents'] %>">
+          <%= product['name'] %>
+        </option>
+      <% end %>>
+    </select>
+
+    <label class="font-medium" for="order_quantity">量(quantity)</label>
+    <input min="1" class="text-field col-span-2" type="number" name="order[quantity]" id="order_quantity" value=>
+
+    <label class="font-medium" for="order_email">Email</label>
+    <input class="text-field col-span-2" required="required" type="email" name="order[email]" id="order_email" value="hoge@example.com">
+
+    <label class="col-span-2 font-medium" for="order_address">配達先住所(shipping address)</label>
+    <textarea class="text-field text-sm col-span-3 h-32 bg-white" name="order[address]" id="order_address">東京都港区芝公園4丁目2-8 東京タワー</textarea>
+
+    <span class="font-bold"><span data-total-label></span><span>&nbsp;</span></span>
+    <span data-total class="col-span-2 text-right"></span>
+
+
+    <div class="col-span-3 text-right">
+      <button name="button" type="submit" class="button">
+        注文(Order)レコードを作成する
+      </button>
+    </div>
+  </form>
+</main>

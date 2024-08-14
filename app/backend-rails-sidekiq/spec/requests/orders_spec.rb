@@ -34,7 +34,7 @@ RSpec.describe 'orders', type: :request do
                          example: 100,
                          description: '価格(セント)',
                          minimum: 0
-                       },
+                       }
                      }
                    }
                  }
@@ -148,7 +148,7 @@ RSpec.describe 'orders', type: :request do
                    type: :array,
                    required: true,
                    items: { type: :string },
-                   example: ["Can't foo"]
+                   example: [ "Can't foo" ]
                  },
                  products: {
                    type: :array,
@@ -173,7 +173,7 @@ RSpec.describe 'orders', type: :request do
                          example: 100,
                          description: '価格(セント)',
                          minimum: 0
-                       },
+                       }
                      }
                    }
                  }

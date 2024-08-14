@@ -13,21 +13,36 @@ RSpec.describe 'welcome', type: :request do
       response(200, 'successful') do
         schema type: :object,
                properties: {
-                 message: { type: :string },
-                 list: { type: :array, items: { type: :string } },
-                 time: {
-                   type: :string,
-                   example: '2024-01-01T12:34:56.789+09:00'
+                 service_statuses: {
+                    type: :array,
+                    required: true,
+                    items: { '$ref' => '#/components/schemas/service_status' }
+                 },
+                 order_ids: {
+                    type: :array,
+                    required: true,
+                    items: { type: :integer }
                  }
-               },
-               required: %w[message list time]
+               }
         run_test! do |response|
-          expected = {
-            message: 'Welcome to the API',
-            list: %w[a b]
-          }.to_json
+          expected = <<~JSON
+            {
+              "order_ids": [1],
+              "service_statuses": [
+                {
+                  "info": {
+                    "database": "app_test",
+                    "host": "127.0.0.1",
+                    "username": "app"
+                  },
+                  "name": "db",
+                  "status": true,
+                  "type": "db"
+                }
+              ]
+            }
+          JSON
           expect(response.body).to be_json_eql(expected).excluding('time')
-          expect(JSON.parse(response.body)['time']).to be_valid_iso8601_jst_with_milliseconds
         end
       end
     end

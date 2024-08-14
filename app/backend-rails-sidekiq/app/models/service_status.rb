@@ -20,8 +20,8 @@ class ServiceStatus
     #  error_catcher_status,
     # ] + api_services
     [
-      db_status,
-      redis_status
+      db_status
+      # redis_status
     ] + api_services
   end
 
@@ -63,10 +63,9 @@ class ServiceStatus
     begin
       Order.count
       service_status.good!(
-        ActiveRecord::Base.connection.
-          raw_connection.
-          conninfo_hash.
-          slice(:dbname, :hostaddr, :host, :port, :user)
+        ActiveRecord::Base.connection_db_config
+                          .configuration_hash
+                          .slice(:database, :host, :username)
       )
     rescue => ex
       service_status.problem!(ex)

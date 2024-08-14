@@ -21,6 +21,8 @@ group :development do
 end
 group :test do
   gem "rspec-rails"
+  # json比較用の便利gem
+  # デフォルトでid, created_at, updated_atを無視する
   gem "json_spec"
 end
 gem "rack-cors"

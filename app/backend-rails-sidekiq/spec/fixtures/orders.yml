@@ -1,0 +1,10 @@
+order1:
+  id: 1
+  product_id: 1
+  quantity: 1
+  address: "東京都港区芝公園4丁目2-8 東京タワー"
+  email: "test@example.com"
+  created_at: <%= Time.now %>>
+  updated_at: <%= Time.now %>
+  user_id: 1
+  charge_successful: false

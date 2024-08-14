@@ -1,9 +1,9 @@
 class WelcomeController < ApplicationController
   def show
-    render json: {
-      message: "Welcome to the API",
-      list: %w[a b],
-      time: Time.now.getlocal("+09:00").iso8601(3)
-    }
+    response = {
+      "service_statuses" => ServiceStatus.all,
+      "order_ids" => Order.pluck(:id).sort
+    }.as_json
+    render json: response
   end
 end

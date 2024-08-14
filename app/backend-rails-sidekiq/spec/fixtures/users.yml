@@ -1,0 +1,11 @@
+#INSERT INTO users (email, payments_customer_id, payments_payment_method_id, created_at, updated_at)
+#VALUES
+# ('pat@example.com', 'cust_foobar123', 'pm_hogefuga123', NOW(), NOW())
+#;
+pat:
+  id: 1
+  email: 'pat@example.com'
+  payments_customer_id: 'cust_foobar123'
+  payments_payment_method_id: 'pm_hogefuga123'
+  created_at: <%= Time.now %>>
+  updated_at: <%= Time.now %>

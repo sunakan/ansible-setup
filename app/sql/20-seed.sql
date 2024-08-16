@@ -7,7 +7,7 @@ set foreign_key_checks = 1;
 
 INSERT INTO users (email, payments_customer_id, payments_payment_method_id, created_at, updated_at)
 VALUES
-('pat@example.com', 'cust_foobar123', 'pm_hogefuga123', NOW(), NOW())
+('pat@example.com', 'customer_id-red-apple-123', 'payment_method_id-yellow-banana-456', NOW(), NOW())
 ;
 
 INSERT INTO products (name, quantity_remaining, price_cents, created_at, updated_at)

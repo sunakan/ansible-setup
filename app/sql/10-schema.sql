@@ -12,8 +12,8 @@ create unique index index_products_on_name on products (name);
 create table if not exists users (
   id                         bigint auto_increment primary key,
   email                      varchar(255)          not null comment 'Email address of this user',
-  payments_customer_id       varchar(255)          not null comment 'ID of 顧客 in our payments service',
-  payments_payment_method_id varchar(255)          not null comment 'ID of 顧客 chosen payment method in our payments service',
+  payments_customer_id       varchar(255)          not null comment '外部支払いサービスのユーザー固有ID',
+  payments_payment_method_id varchar(255)          not null comment '外部支払いサービスの支払い方法ID',
   created_at                 timestamp(6)          not null comment 'レコード作成日時(メタデータ)',
   updated_at                 timestamp(6)          not null comment 'レコード更新日時(メタデータ)'
 ) engine=innodb comment='ユーザー';

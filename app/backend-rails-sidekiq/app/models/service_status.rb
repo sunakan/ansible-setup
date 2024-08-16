@@ -1,7 +1,7 @@
 class ServiceStatus
   include ActiveModel::Model
 
-  attr_accessor :name, :emoji, :status, :info, :type, :throttle, :crash, :sleep
+  attr_accessor :name, :status, :info, :type, :throttle, :crash, :sleep
 
   def good!(info)
     self.status = true
@@ -20,8 +20,8 @@ class ServiceStatus
     #  error_catcher_status,
     # ] + api_services
     [
-      db_status
-      # redis_status
+      db_status,
+      redis_status
     ] + api_services
   end
 
@@ -44,9 +44,9 @@ class ServiceStatus
     service_status
   end
 
-  def update(params)
-    BaseServiceWrapper.update_config(self.name, params.stringify_keys)
-  end
+  #def update(params)
+  #  BaseServiceWrapper.update_config(self.name, params.stringify_keys)
+  #end
 
   def api? = self.type.to_s == "api"
 
@@ -58,6 +58,11 @@ class ServiceStatus
   def self.email_status         = EmailServiceWrapper.new.status
   def self.error_catcher_status = ErrorCatcherServiceWrapper.new.status
 
+
+  #
+  # db_status
+  # DBの接続情報を取得
+  #
   def self.db_status
     service_status = ServiceStatus.new(name: "db", type: :db)
     begin
@@ -73,9 +78,13 @@ class ServiceStatus
     service_status
   end
 
+  #
+  # redis_status
+  # Redisとの接続を確認し、情報を取得
+  #
   def self.redis_status
     service_status = ServiceStatus.new(name: "redis", type: :db)
-    redis = Redis.new(url: ENV["SIDEKIQ_REDIS_URL"])
+    redis = Redis.new(url: ENV.fetch("REDIS_URL"))
     begin
       redis.set("diagnostic-time", Time.zone.now)
       redis.get("diagnostic-time")

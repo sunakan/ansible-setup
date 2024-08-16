@@ -17,8 +17,7 @@ class OrdersController < ApplicationController
     order_params = params.require(:order).permit(:product_id, :email, :address, :quantity).merge(user_id: current_user.id)
     order = Order.new(order_params)
     if order.save
-      # 非同期Jobの登録
-      # TODO: CompleteOrderJob.perform_async(order.id)
+      CompleteOrder.new(order).execute
       render json: order.as_json, status: 201
       return
     end

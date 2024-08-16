@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
     order_params = params.require(:order).permit(:product_id, :email, :address, :quantity).merge(user_id: current_user.id)
     order = Order.new(order_params)
     if order.save
-      CompleteOrder.new(order).execute
+      CompleteOrderJob.perform_async(order.id)
       render json: order.as_json, status: 201
       return
     end

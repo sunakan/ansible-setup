@@ -28,3 +28,4 @@ end
 gem "rack-cors"
 # Sidekiqで利用
 gem "redis"
+gem "sidekiq"

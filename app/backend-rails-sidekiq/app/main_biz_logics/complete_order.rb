@@ -1,9 +1,11 @@
 # Command pattern
 # executeで実行
 class CompleteOrder
-
-  def initialize(order)
+  def initialize(order, user_payment_customer_id, user_payment_payment_method_id)
     @order = order
+    # 支払いサービスにて利用
+    @user_payment_customer_id = user_payment_customer_id
+    @user_payment_payment_method_id = user_payment_payment_method_id
   end
 
   def execute

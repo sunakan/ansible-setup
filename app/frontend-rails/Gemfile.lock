@@ -192,7 +192,6 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
   sprockets-rails
-  tzinfo-data
 
 RUBY VERSION
    ruby 3.3.4p94

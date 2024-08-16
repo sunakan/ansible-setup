@@ -1,9 +1,9 @@
 <h3>
   <%= service_status['name'].humanize %>
   <% if service_status['status'] == true %>>
-    <span role="img" description="checkmark">✅</span>
+    <span role="img" description="checkmark">✅(通信を確認しました。現在Activeです)</span>
   <% else %>
-    <span role="img" description="stop sign">🛑</span>
+    <span role="img" description="stop sign">🛑(通信を確認できませんでした。現在非Activeです)</span>
   <% end %>
 </h3>
 
@@ -32,7 +32,8 @@
       <% if service_status['api'] == true %>
         <tr>
           <td class="w-1/3 border px-4 py-2 text-left">
-            Throttle?
+            Throttle?(データセービング中か？)
+            スロットリングとは、過度な負荷を防止するために意図的に性能低下やリクエスト拒否をする制御のこと
           </td>
           <td class="w-1/2 border px-4 py-2 text-left" data-testid="throttle">
             <%= service_status['throttle'] ? "Yes" : "No" %>

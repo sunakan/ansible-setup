@@ -19,9 +19,9 @@
   </dl>
 
   <section class="border rounded mt-6 p-2 border-slate-400 bg-slate-100">
-    <h2 class="text-xl font-semibold">Operational Info</h2>
+    <h2 class="text-xl font-semibold">運用情報(Operational Info)</h2>
     <dl class="grid grid-cols-3 gap4 items-center">
-      <dt class="font-medium">Payment</dt>
+      <dt class="font-medium">支払い(Payment)</dt>
       <dd class="col-span-2">
         <% if response['order']['charge_completed_at'].present? %>
           <% if response['order']['charge_successful'] %>
@@ -29,10 +29,10 @@
               <span class="mr-2" role="img" description="checkmark">✅</span>
               <div>
                 <div>
-                  External ID: <%= response['order']['charge_id'] %>
+                  外部ID: <%= response['order']['charge_id'] %>
                 </div>
                 <div>
-                  Charged: <%= response['order']['charge_completed_at'].to_date %>
+                  支払日: <%= response['order']['charge_completed_at'].to_date %>
                 </div>
               </div>
             </div>
@@ -43,21 +43,21 @@
           <span class="mr-2" role="img" description="rotating-arrows">🔄</span>処理中です
         <% end %>
       </dd>
-      <dt class="font-medium">Confirmation Email</dt>
+      <dt class="font-medium">Email確認</dt>
       <dd class="col-span-2">
         <% if response['order']['email_id'].present? %>
-          <span class="mr-2" role="img" description="checkmark">✅</span>External ID: <%= response['order']['email_id'] %>
+          <span class="mr-2" role="img" description="checkmark">✅</span>外部ID: <%= response['order']['email_id'] %>
         <% elsif response['order']['charge_successful']  %>
           <span class="mr-2" role="img" description="rotating-arrows">🔄</span>処理中です
         <% else %>
           <span class="mr-2" role="img" description="raised-hand">✋</span>保留
         <% end %>
       </dd>
-      <dt class="font-medium">達成(Fulfillment)</dt>
+      <dt class="font-medium">配送処理(Fulfillment)</dt>
       <dd class="col-span-2">
         <% if response['order']['email_id'].present? %>
 
-          <span class="mr-2" role="img" description="checkmark">✅</span>External ID: <%= response['order']['fulfillment_request_id'] %>
+          <span class="mr-2" role="img" description="checkmark">✅</span>外部ID: <%= response['order']['fulfillment_request_id'] %>
         <% elsif response['order']['charge_successful']  %>
           <span class="mr-2" role="img" description="rotating-arrows">🔄</span>処理中
         <% else %>

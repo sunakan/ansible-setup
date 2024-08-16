@@ -1,0 +1,8 @@
+#cloud-config
+hostname: ${hostname}
+ssh_pwauth: false
+ssh_authorized_keys:
+%{ for ssh_key in ssh_authorized_keys ~}
+  - '${ssh_key}'
+%{ endfor ~}
+timezone: "Asia/Tokyo"

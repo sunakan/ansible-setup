@@ -117,3 +117,34 @@
   ansible.builtin.command: 'asdf global nodejs {{ asdf_nodejs_version }}'
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
+
+
+#
+# asdf python
+#
+- name: asdf plugin add python
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: 'asdf plugin add python'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
+  register: added_asdf_python_plugin
+  changed_when: '"already added" not in added_asdf_python_plugin.stdout'
+
+- name: 'asdf install python {{ asdf_python_version }}'
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: 'asdf install python {{ asdf_python_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"
+  register: installed_asdf_python
+  changed_when: '"already installed" not in installed_asdf_python.stdout'
+- name: 'asdf global python {{ asdf_python_version }}'
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.command: 'asdf global python {{ asdf_python_version }}'
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ asdf_user_home }}/.asdf/bin"

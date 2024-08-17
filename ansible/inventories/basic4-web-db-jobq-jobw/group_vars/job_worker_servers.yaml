@@ -15,3 +15,6 @@ db_port: "{{ lookup('ansible.builtin.env', 'DB_PORT') }}"
 db_name: "{{ lookup('ansible.builtin.env', 'DB_NAME') }}"
 db_user: "{{ lookup('ansible.builtin.env', 'DB_USER') }}"
 db_pass: "{{ lookup('ansible.builtin.env', 'DB_PASS') }}"
+
+self_clone_user: app
+self_clone_path: /home/app/ansible-setup

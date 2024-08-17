@@ -37,3 +37,10 @@
   gather_facts: False
   roles:
     - asdf
+
+- name: 全サーバー共通設定(最後)
+  hosts: all
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - self_clone

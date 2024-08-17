@@ -1,3 +1,4 @@
 ---
 
-# 特に無し
+self_clone_user: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USER') }}"
+self_clone_path: "/home/{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USER') }}/ansible-setup"

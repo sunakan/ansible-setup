@@ -4,3 +4,6 @@
 db_user: "{{ lookup('ansible.builtin.env', 'DB_USER') }}"
 db_pass: "{{ lookup('ansible.builtin.env', 'DB_PASS') }}"
 db_root_user_pass: "{{ lookup('ansible.builtin.env', 'DB_ROOT_USER_PASS') }}"
+
+self_clone_user: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USER') }}"
+self_clone_path: "/home/{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USER') }}/ansible-setup"

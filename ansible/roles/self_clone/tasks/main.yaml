@@ -1,0 +1,21 @@
+---
+
+- name: リポジトリ追加に必要なpackageのインストール
+  tags: self_clone
+  become: yes
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    install_recommends: no
+    cache_valid_time: '{{ apt_update_cache_valid_time }}'
+    name:
+      - git
+      - curl
+      - gpg
+
+- name: Git cloneを実行
+  become: yes
+  become_user: '{{ self_clone_user }}'
+  ansible.builtin.git:
+    repo: https://github.com/sunakan/ansible-setup.git
+    dest: '{{ self_clone_path }}'

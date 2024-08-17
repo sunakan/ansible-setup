@@ -17,3 +17,9 @@ asdf_python_version: 3.12.5
 db_user: "{{ lookup('ansible.builtin.env', 'DB_USER') }}"
 db_pass: "{{ lookup('ansible.builtin.env', 'DB_PASS') }}"
 db_root_user_pass: "{{ lookup('ansible.builtin.env', 'DB_ROOT_USER_PASS') }}"
+
+# todo: 消す
+job_queue_url: "{{ lookup('ansible.builtin.env', 'JOB_QUEUE_URL') }}"
+db_host: "{{ lookup('ansible.builtin.env', 'DB_HOST') }}"
+db_port: "{{ lookup('ansible.builtin.env', 'DB_PORT') }}"
+db_name: "{{ lookup('ansible.builtin.env', 'DB_NAME') }}"

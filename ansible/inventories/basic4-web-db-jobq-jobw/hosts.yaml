@@ -1,0 +1,24 @@
+# 環境変数
+# - WEB_01_HOST
+# - DB_01_HOST
+# - JOB_QUEUE_01_HOST
+# - JOB_WORKER_01_HOST
+---
+all:
+  children:
+    web_servers:
+      hosts:
+        web_01:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'WEB_01_HOST') }}"
+    db_servers:
+      hosts:
+        db_01:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'DB_01_HOST') }}"
+    job_queue_servers:
+      hosts:
+        job_queue_01:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'JOB_QUEUE_01_HOST') }}"
+    job_worker_servers:
+      hosts:
+        job_worker_01:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'JOB_WORKER_01_HOST') }}"

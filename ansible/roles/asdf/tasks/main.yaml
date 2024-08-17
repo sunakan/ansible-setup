@@ -38,9 +38,25 @@
   become_user: '{{ asdf_user }}'
   ansible.builtin.blockinfile:
     path: '{{ asdf_user_home }}/.bashrc'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR ASDF"
     block: |
       . "$HOME/.asdf/asdf.sh"
       . "$HOME/.asdf/completions/asdf.bash"
+
+- name: ~/.bashrcにDBやJOBQUEUEの設定を環境変数としてセット
+  tags: asdf
+  become: yes
+  become_user: '{{ asdf_user }}'
+  ansible.builtin.blockinfile:
+    path: '{{ asdf_user_home }}/.bashrc'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR APP"
+    block: |
+      export JOB_QUEUE_URL="{{ job_queue_url }}"
+      export DB_HOST="{{ db_host }}"
+      export DB_PORT="{{ db_port }}"
+      export DB_NAME="{{ db_name }}"
+      export DB_USER="{{ db_user }}"
+      export DB_PASS="{{ db_pass }}"
 
 #
 # asdf ruby
@@ -62,7 +78,7 @@
     cache_valid_time: '{{ apt_update_cache_valid_time }}'
     install_recommends: no
     # ノート1: Ruby3.2.0からlibyamlが同梱されなくなったため、libyaml-devパッケージが必要になった
-    # ノート2: Rubyのビルドにはdefault-mysqlclient-devは不要、しかしmysql2 gemインストールに必要なためここで入れる
+    # ノート2: Rubyのビルドにはdefault-libmysqlclient-devは不要、しかしmysql2 gemインストールに必要なためここで入れる
     name:
       - build-essential
       - libssl-dev

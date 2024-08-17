@@ -1,0 +1,39 @@
+# basic4-web-db-jobq-jobw
+# Web, DB, JobQueue, JobWorkerの4種のサーバー群を構築するためのPlaybook
+---
+- name: 全サーバー共通設定
+  hosts: all
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - common
+    - docker
+
+- name: Webサーバー設定
+  hosts: web_servers
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - asdf
+    - nginx
+
+- name: DBサーバー設定
+  hosts: db_servers
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - mariadb
+
+- name: JobQueueサーバー設定
+  hosts: job_queue_servers
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - redis
+
+- name: JobWorkerサーバー設定
+  hosts: job_worker_servers
+  # todo: 消す(gather_facts: Trueに戻す)
+  gather_facts: False
+  roles:
+    - asdf

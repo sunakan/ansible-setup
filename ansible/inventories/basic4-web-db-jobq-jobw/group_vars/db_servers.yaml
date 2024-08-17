@@ -1,0 +1,6 @@
+---
+
+# MariaDB等のDBユーザーとパスワード
+db_user: "{{ lookup('ansible.builtin.env', 'DB_USER') }}"
+db_pass: "{{ lookup('ansible.builtin.env', 'DB_PASS') }}"
+db_root_user_pass: "{{ lookup('ansible.builtin.env', 'DB_ROOT_USER_PASS') }}"

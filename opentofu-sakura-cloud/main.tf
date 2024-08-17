@@ -35,25 +35,25 @@ resource "sakuracloud_server" "web_01" {
     packet_filter_id = sakuracloud_packet_filter.filter.id
   }
   network_interface {
-    upstream  = sakuracloud_switch.sample.id
+    upstream = sakuracloud_switch.sample.id
   }
   user_data = templatefile("user_data.tftpl", {
-    hostname: "web-01",
-    ssh_authorized_keys: local.github_user_public_keys,
-    cidr: "192.168.0.101/24",
+    hostname : "web-01",
+    ssh_authorized_keys : local.github_user_public_keys,
+    cidr : "192.168.0.101/24",
   })
 }
 
 ############################################
 # DB
 ############################################
-resource "sakuracloud_disk" "db" {
-  name              = "db"
+resource "sakuracloud_disk" "db_01" {
+  name              = "db-01"
   source_archive_id = data.sakuracloud_archive.ubuntu.id
 }
-resource "sakuracloud_server" "db" {
-  name   = "db"
-  disks  = [sakuracloud_disk.db.id]
+resource "sakuracloud_server" "db_01" {
+  name   = "db-01"
+  disks  = [sakuracloud_disk.db_01.id]
   core   = 1
   memory = 2
   network_interface {
@@ -64,22 +64,22 @@ resource "sakuracloud_server" "db" {
     upstream = sakuracloud_switch.sample.id
   }
   user_data = templatefile("user_data.tftpl", {
-    hostname: "db",
-    ssh_authorized_keys: local.github_user_public_keys,
-    cidr: "192.168.0.102/24",
+    hostname : "db-01",
+    ssh_authorized_keys : local.github_user_public_keys,
+    cidr : "192.168.0.102/24",
   })
 }
 
 ############################################
-# Redis
+# Job Queue
 ############################################
-resource "sakuracloud_disk" "redis" {
-  name              = "redis"
+resource "sakuracloud_disk" "job_queue_01" {
+  name              = "job-queue-01"
   source_archive_id = data.sakuracloud_archive.ubuntu.id
 }
-resource "sakuracloud_server" "redis" {
-  name   = "redis"
-  disks  = [sakuracloud_disk.redis.id]
+resource "sakuracloud_server" "job_queue_01" {
+  name   = "job-queue-01"
+  disks  = [sakuracloud_disk.job_queue_01.id]
   core   = 1
   memory = 4
   network_interface {
@@ -90,22 +90,22 @@ resource "sakuracloud_server" "redis" {
     upstream = sakuracloud_switch.sample.id
   }
   user_data = templatefile("user_data.tftpl", {
-    hostname: "db",
-    ssh_authorized_keys: local.github_user_public_keys,
-    cidr: "192.168.0.103/24",
+    hostname : "job-queue-01",
+    ssh_authorized_keys : local.github_user_public_keys,
+    cidr : "192.168.0.103/24",
   })
 }
 
 ############################################
-# background job
+# Job Worker
 ############################################
-resource "sakuracloud_disk" "background_job" {
-  name              = "background-job"
+resource "sakuracloud_disk" "job_worker_01" {
+  name              = "job-worker-01"
   source_archive_id = data.sakuracloud_archive.ubuntu.id
 }
-resource "sakuracloud_server" "background_job" {
-  name   = "background-job"
-  disks  = [sakuracloud_disk.background_job.id]
+resource "sakuracloud_server" "job_worker_01" {
+  name   = "job-worker-01"
+  disks  = [sakuracloud_disk.job_worker_01.id]
   core   = 1
   memory = 2
   network_interface {
@@ -116,8 +116,8 @@ resource "sakuracloud_server" "background_job" {
     upstream = sakuracloud_switch.sample.id
   }
   user_data = templatefile("user_data.tftpl", {
-    hostname: "background-job",
-    ssh_authorized_keys: local.github_user_public_keys,
-    cidr: "192.168.0.104/24",
+    hostname : "job-worker-01",
+    ssh_authorized_keys : local.github_user_public_keys,
+    cidr : "192.168.0.104/24",
   })
 }

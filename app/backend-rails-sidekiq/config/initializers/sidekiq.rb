@@ -1,6 +1,6 @@
-redis_url = ENV.fetch("REDIS_URL").to_s
+redis_url = ENV.fetch("JOB_QUEUE_URL").to_s
 if redis_url.to_s == ""
-  raise StandardError.new("env REDIS_URL is invalid. Please check environments")
+  raise StandardError.new("env JOB_QUEUE_URL is invalid. Please check environments")
 end
 
 # configure_server

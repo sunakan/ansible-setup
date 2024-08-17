@@ -84,7 +84,7 @@ class ServiceStatus
   #
   def self.redis_status
     service_status = ServiceStatus.new(name: "redis", type: :db)
-    redis = Redis.new(url: ENV.fetch("REDIS_URL"))
+    redis = Redis.new(url: ENV.fetch("JOB_QUEUE_URL"))
     begin
       redis.set("diagnostic-time", Time.zone.now)
       redis.get("diagnostic-time")

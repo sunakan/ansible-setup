@@ -34,3 +34,8 @@ ansible-playbook -i inventories/all-in-one/hosts.yaml playbook.yml
 3. Pythonプラグラムを転送(SFTP)
 4. Pythonプログラムを実行
 5. Pythonプログラムを削除
+
+
+### basic4-web-db-jobq-jobwの構成
+
+![](./basic4-web-db-jobq-jobw.drawio.png)
